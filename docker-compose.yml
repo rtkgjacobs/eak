@@ -7,14 +7,14 @@ services:
       - "cluster.routing.allocation.disk.threshold_enabled=false"
       - "discovery.type=single-node"
       - xpack.security.enabled=false
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms1024m -Xmx1024m
     ports:
       - 9200:9200
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:9200']
       interval: 10s
       timeout: 5s
-      retries: 3
+      retries: 5
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.2
@@ -26,7 +26,7 @@ services:
       test: ['CMD', 'curl', '-f', 'http://localhost:5601']
       interval: 10s
       timeout: 5s
-      retries: 3
+      retries: 5
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -37,7 +37,7 @@ services:
     environment:
       - output.elasticsearch.hosts=['http://elasticsearch:9200']
       - apm-server.host="0.0.0.0:8200"
-      - apm-server.secret_token="xxVpmQB2HMzCL9PgBHVrnxjNXXw5J7bd79DFm6sjBJR5HPXDhcF8MSb3vv4bpg44"
+      - apm-server.secret_token=""
       - setup.kibana.host="kibana:5601"
       - setup.template.enabled=true
       - logging.to_files=false
